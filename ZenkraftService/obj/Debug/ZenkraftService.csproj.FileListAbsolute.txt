@@ -1,0 +1,13 @@
+C:\Users\Wael El Zahr\Desktop\Wael\UpWork\Zenkraft\C# Library - Zenkraft\Dev\ZenkraftService\bin\Debug\ZenkraftService.dll
+C:\Users\Wael El Zahr\Desktop\Wael\UpWork\Zenkraft\C# Library - Zenkraft\Dev\ZenkraftService\bin\Debug\ZenkraftService.pdb
+C:\Users\Wael El Zahr\Desktop\Wael\UpWork\Zenkraft\C# Library - Zenkraft\Dev\ZenkraftService\bin\Debug\Microsoft.Crm.Sdk.Proxy.dll
+C:\Users\Wael El Zahr\Desktop\Wael\UpWork\Zenkraft\C# Library - Zenkraft\Dev\ZenkraftService\bin\Debug\Microsoft.Xrm.Sdk.dll
+C:\Users\Wael El Zahr\Desktop\Wael\UpWork\Zenkraft\C# Library - Zenkraft\Dev\ZenkraftService\bin\Debug\Microsoft.Crm.Sdk.Proxy.xml
+C:\Users\Wael El Zahr\Desktop\Wael\UpWork\Zenkraft\C# Library - Zenkraft\Dev\ZenkraftService\bin\Debug\Microsoft.Xrm.Sdk.xml
+C:\Users\Wael El Zahr\Desktop\Wael\UpWork\Zenkraft\C# Library - Zenkraft\Dev\ZenkraftService\obj\Debug\ZenkraftService.csproj.CoreCompileInputs.cache
+C:\Users\Wael El Zahr\Desktop\Wael\UpWork\Zenkraft\C# Library - Zenkraft\Dev\ZenkraftService\obj\Debug\ZenkraftService.csproj.CopyComplete
+C:\Users\Wael El Zahr\Desktop\Wael\UpWork\Zenkraft\C# Library - Zenkraft\Dev\ZenkraftService\obj\Debug\ZenkraftService.dll
+C:\Users\Wael El Zahr\Desktop\Wael\UpWork\Zenkraft\C# Library - Zenkraft\Dev\ZenkraftService\obj\Debug\ZenkraftService.pdb
+C:\Users\Wael El Zahr\Desktop\Wael\UpWork\Zenkraft\C# Library - Zenkraft\Dev\ZenkraftService\obj\Debug\ZenkraftService.csprojAssemblyReference.cache
+C:\Users\Wael El Zahr\Desktop\Wael\UpWork\Zenkraft\C# Library - Zenkraft\Dev\ZenkraftService\bin\Debug\Newtonsoft.Json.dll
+C:\Users\Wael El Zahr\Desktop\Wael\UpWork\Zenkraft\C# Library - Zenkraft\Dev\ZenkraftService\bin\Debug\Newtonsoft.Json.xml
