@@ -130,7 +130,7 @@ namespace ZenkraftService.Tests
         public void PickupTest()
         {
             ZkTime zkTime = new ZkTime();
-            zkTime.date = "2019-07-18";
+            zkTime.date = DateTime.Now.ToString("yyyy-MM-dd");//"2019-07-18";
             zkTime.ready_time = "15:00";
             zkTime.close_time = "18:00";
 
@@ -206,7 +206,7 @@ namespace ZenkraftService.Tests
             zkService.Test = true;
 
             Shipment shipment = new Shipment();
-            shipment.carrier = "fedex";
+            //shipment.carrier = "fedex";
             shipment.type = "outbound";
             shipment.dim_units = "CM";
             shipment.weight_units = "KG";

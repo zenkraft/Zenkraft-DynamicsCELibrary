@@ -97,6 +97,12 @@ namespace ZenkraftService
 
                 string jsonObj = JsonConvert.SerializeObject(dataObject);
                 ratesResponse = DataLayer.getResponseFromApi(ApiKey, DataLayer.WebMethod.POST, "/rate", jsonObj);
+
+                ZkSuccess zkSuccess = GetApiCallSuccess(ratesResponse);
+                if (zkSuccess.success == false)
+                {
+                    throw new Exception(zkSuccess.error_message + " " + zkSuccess.detail);
+                }
             }
             catch(Exception ex)
             {
@@ -113,6 +119,14 @@ namespace ZenkraftService
             try
             {
                 carriersResult = DataLayer.getResponseFromApi(ApiKey, DataLayer.WebMethod.GET, "/meta/carriers");
+                ZkSuccess zkSuccess = GetApiCallSuccess(carriersResult);
+                if (zkSuccess.success == false)
+                {
+                    throw new Exception(zkSuccess.error_message + " " + zkSuccess.detail);
+                }
+                
+            
+
             }
             catch(Exception ex)
             {
@@ -129,7 +143,18 @@ namespace ZenkraftService
             try
             {
                 string jsonResponse = DataLayer.getResponseFromApi(ApiKey, DataLayer.WebMethod.GET, $"/meta/carrier/{carrierName}");
-                carrierDetail = JsonConvert.DeserializeObject<CarrierDetail>(jsonResponse);
+
+                ZkSuccess zkSuccess = GetApiCallSuccess(jsonResponse);
+                if (zkSuccess.success == true)
+                {
+                    carrierDetail = JsonConvert.DeserializeObject<CarrierDetail>(jsonResponse);
+                }
+                else
+                {
+                    throw new Exception(zkSuccess.error_message + " " + zkSuccess.detail);
+                }
+
+                
             }
             catch(Exception ex)
             {
@@ -151,16 +176,27 @@ namespace ZenkraftService
 
                 if (!string.IsNullOrEmpty(jsonResponse))
                 {
-                    JObject dataObj = JObject.Parse(jsonResponse);
-                    JObject carrierAccountObj = JObject.Parse(dataObj["shipping_account"].ToString());
-                    carrierAccount = new CarrierAccount();
-                    carrierAccount.auth = carrierAccountObj["auth"].ToString();
-                    carrierAccount.name = carrierAccountObj["name"].ToString();
-                    carrierAccount.id = Int64.Parse(carrierAccountObj["id"].ToString());
-                    carrierAccount.carrier = carrierAccountObj["carrier"].ToString();
-                    carrierAccount.dim_units = carrierAccountObj["dim_units"].ToString();
-                    carrierAccount.weight_units = carrierAccountObj["weight_units"].ToString();
-                    carrierAccount.currency = carrierAccountObj["currency"].ToString();
+                    ZkSuccess zkSuccess = GetApiCallSuccess(jsonResponse);
+                    if (zkSuccess.success == true)
+                    {
+                        JObject dataObj = JObject.Parse(jsonResponse);
+                        JObject carrierAccountObj = JObject.Parse(dataObj["shipping_account"].ToString());
+                        carrierAccount = new CarrierAccount();
+                        carrierAccount.auth = carrierAccountObj["auth"].ToString();
+                        carrierAccount.name = carrierAccountObj["name"].ToString();
+                        carrierAccount.id = Int64.Parse(carrierAccountObj["id"].ToString());
+                        carrierAccount.carrier = carrierAccountObj["carrier"].ToString();
+                        carrierAccount.dim_units = carrierAccountObj["dim_units"].ToString();
+                        carrierAccount.weight_units = carrierAccountObj["weight_units"].ToString();
+                        carrierAccount.currency = carrierAccountObj["currency"].ToString();
+                    }
+                    else
+                    {
+                        throw new Exception(zkSuccess.error_message + " " + zkSuccess.detail);
+                    }
+
+
+                    
                 }
             }
             catch(Exception ex)
@@ -187,7 +223,18 @@ namespace ZenkraftService
                 dataObject.track = track;
                 string payload = JsonConvert.SerializeObject(dataObject);
                 string jsonResponse = DataLayer.getResponseFromApi(ApiKey, DataLayer.WebMethod.POST, "/track", payload);
-                shipmentStatus = JsonConvert.DeserializeObject<ShipmentStatus>(jsonResponse);
+
+                ZkSuccess zkSuccess = GetApiCallSuccess(jsonResponse);
+                if (zkSuccess.success == true)
+                {
+                    shipmentStatus = JsonConvert.DeserializeObject<ShipmentStatus>(jsonResponse);
+                }
+                else
+                {
+                    throw new Exception(zkSuccess.error_message + " " + zkSuccess.detail);
+                }
+
+                
             }
             catch(Exception ex)
             {
@@ -357,18 +404,21 @@ namespace ZenkraftService
                 string jsonObj = JsonConvert.SerializeObject(dataObject);
                 string jsonResponse = DataLayer.getResponseFromApi(ApiKey, DataLayer.WebMethod.POST, "/ship", jsonObj);
 
-                JObject responseObj = JObject.Parse(jsonResponse);
-                if (responseObj["shipment"] != null)
+
+                ZkSuccess zkSuccess = GetApiCallSuccess(jsonResponse);
+                if (zkSuccess.success == true)
                 {
-                    submittedShipment = JsonConvert.DeserializeObject<Shipment>(responseObj["shipment"].ToString());
+                    JObject responseObj = JObject.Parse(jsonResponse);
+                    if (responseObj["shipment"] != null)
+                    {
+                        submittedShipment = JsonConvert.DeserializeObject<Shipment>(responseObj["shipment"].ToString());
+                    }
                 }
-
-                if(responseObj["error"] != null)
+                else
                 {
-                    throw new Exception(responseObj["error"]["message"].ToString());
+                    throw new Exception(zkSuccess.error_message + " " + zkSuccess.detail);
                 }
-
-
+                              
             }
             catch(Exception ex)
             {
@@ -379,7 +429,6 @@ namespace ZenkraftService
         }
 
        
-
         public Pickup Pickup(Pickup pickup)
         {
             Pickup pickupResult = null;
@@ -438,15 +487,19 @@ namespace ZenkraftService
                 string jsonObj = JsonConvert.SerializeObject(dataObj);
                 string jsonResponse = DataLayer.getResponseFromApi(ApiKey, DataLayer.WebMethod.POST, "/pickup", jsonObj);
 
-                JObject responseObj = JObject.Parse(jsonResponse);
-                if(responseObj["error"] == null)
+                ZkSuccess zkSuccess = GetApiCallSuccess(jsonResponse);
+                if(zkSuccess.success == true)
                 {
+                    JObject responseObj = JObject.Parse(jsonResponse);
                     pickupResult = JsonConvert.DeserializeObject<Pickup>(responseObj["pickup"].ToString());
                 }
                 else
                 {
-                    throw new Exception(responseObj["error"]["detail"].ToString());
+                    throw new Exception(zkSuccess.error_message + " " + zkSuccess.detail);
                 }
+
+                
+            
                 
             }
             catch(Exception ex)
@@ -464,6 +517,8 @@ namespace ZenkraftService
             ShipmentCancellationResponse shipmentCancellationResponse = new ShipmentCancellationResponse();
             try
             {
+               
+
                 JObject responseObj = JObject.Parse(jsonResponse);
 
 
@@ -495,6 +550,40 @@ namespace ZenkraftService
             }
 
             return shipmentCancellationResponse;
+        }
+
+
+        public ZkSuccess GetApiCallSuccess(string jsonResponse)
+        {
+            ZkSuccess zkSuccess = new ZkSuccess();
+            zkSuccess.success = false;
+            zkSuccess.error_message = jsonResponse;
+            zkSuccess.detail = string.Empty;
+
+            try
+            {
+                JObject responseObj = JObject.Parse(jsonResponse);
+                if(responseObj["error"] == null)
+                {
+                    zkSuccess.success = true;
+                    zkSuccess.error_message = null;
+                    zkSuccess.detail = null;
+
+                }
+                else
+                {
+                    string errorMessage = responseObj["error"]["message"] != null? responseObj["error"]["message"].ToString(): string.Empty;
+                    string errorDetail = responseObj["error"]["detail"] != null ? responseObj["error"]["detail"].ToString() : string.Empty;
+                    zkSuccess.error_message = errorMessage;
+                    zkSuccess.detail = errorDetail;
+                }
+            }
+            catch(Exception)
+            {
+
+            }
+
+            return zkSuccess;
         }
 
         #endregion

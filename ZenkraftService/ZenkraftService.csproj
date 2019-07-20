@@ -72,6 +72,7 @@
     <Compile Include="Models\Shipment.cs" />
     <Compile Include="Models\ShipmentCancellationResponse.cs" />
     <Compile Include="Models\ShipmentStatus.cs" />
+    <Compile Include="Models\ZkSuccess.cs" />
     <Compile Include="Models\ZkField.cs" />
     <Compile Include="Models\ZkTime.cs" />
     <Compile Include="ZenkraftService.cs" />
